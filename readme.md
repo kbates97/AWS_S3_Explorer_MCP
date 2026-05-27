@@ -19,15 +19,24 @@ This server exposes three specific primitives:
 2. `list_s3_objects(bucket_name, prefix, max_keys)`: Lists objects inside a specific bucket. Limits results by default to prevent LLM context window overflow.
 3. `read_s3_file_head(bucket_name, object_key, byte_limit)`: Reads the first few kilobytes of an S3 object to inspect its contents (e.g., CSV headers, JSON structures) without downloading the entire file.
 
-## 💻 Installation and Setup
+## Installation and Setup
 
 ### Prerequisites
 * Python 3.11+
 * AWS credentials configured locally (e.g., `aws configure` or `~/.aws/credentials`)
 
-### Local Setup
-Clone the repository and install the required dependencies:
+### Option 1: User Setup
+Install the package with pip directly from GitHub:
+```bash
+pip install git+https://github.com/kbates97/AWS_S3_Explorer_MCP.git
+```
+You can start the MCP server by running:
+```bash
+aws-s3-mcp
+```
 
+### Option 2: Developer Setup
+Clone the repository and install the required dependencies:
 
 ```bash
 git clone https://github.com/kbates97/AWS_S3_Explorer_MCP.git

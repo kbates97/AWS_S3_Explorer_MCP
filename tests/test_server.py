@@ -1,11 +1,11 @@
 import pytest
 from unittest.mock import AsyncMock, patch
 from botocore.exceptions import BotoCoreError, ClientError, NoCredentialsError
-from s3_mcp_server import list_s3_buckets, list_s3_objects, read_s3_file_head
+from src.aws_s3_mcp.server import list_s3_buckets, list_s3_objects, read_s3_file_head
 
 @pytest.mark.asyncio
 # Intercept the S3 client creation to return a mock client
-@patch('s3_mcp_server.session.create_client')
+@patch('src.aws_s3_mcp.server.session.create_client')
 async def test_list_s3_buckets_success(mock_create_client):
     """Test that a successful bucket list response is correctly parsed."""
 
@@ -25,7 +25,7 @@ async def test_list_s3_buckets_success(mock_create_client):
     mock_client.list_buckets.assert_called_once()
 
 @pytest.mark.asyncio
-@patch('s3_mcp_server.session.create_client')
+@patch('src.aws_s3_mcp.server.session.create_client')
 async def test_list_s3_buckets_no_credentials(mock_create_client):
     """Test error handling when AWS credentials are missing."""
     
@@ -41,7 +41,7 @@ async def test_list_s3_buckets_no_credentials(mock_create_client):
     assert result[0].startswith("Error: AWS credentials not found")
 
 @pytest.mark.asyncio
-@patch('s3_mcp_server.session.create_client')
+@patch('src.aws_s3_mcp.server.session.create_client')
 async def test_list_s3_buckets_client_error(mock_create_client):
     """Test error handling for permission/API issues."""
     
@@ -63,7 +63,7 @@ async def test_list_s3_buckets_client_error(mock_create_client):
     mock_client.list_buckets.assert_called_once()
 
 @pytest.mark.asyncio
-@patch('s3_mcp_server.session.create_client')
+@patch('src.aws_s3_mcp.server.session.create_client')
 async def test_list_s3_buckets_botocore_error(mock_create_client):
     """Test error handling for general network connectivity issues."""
     
@@ -78,7 +78,7 @@ async def test_list_s3_buckets_botocore_error(mock_create_client):
     assert "AWS Connection Error:" in result[0]
 
 @pytest.mark.asyncio
-@patch('s3_mcp_server.session.create_client')
+@patch('src.aws_s3_mcp.server.session.create_client')
 async def test_list_s3_buckets_empty(mock_create_client):
     """Test that an empty bucket list is handled correctly."""
     
@@ -95,7 +95,7 @@ async def test_list_s3_buckets_empty(mock_create_client):
     mock_client.list_buckets.assert_called_once()
 
 @pytest.mark.asyncio
-@patch('s3_mcp_server.session.create_client')
+@patch('src.aws_s3_mcp.server.session.create_client')
 async def test_list_s3_objects_success(mock_create_client):
     """Test that a successful object list response is correctly parsed."""
     
@@ -123,7 +123,7 @@ async def test_list_s3_objects_success(mock_create_client):
     mock_client.list_objects_v2.assert_called_once_with(Bucket='test-bucket', Prefix='', MaxKeys=50)
 
 @pytest.mark.asyncio
-@patch('s3_mcp_server.session.create_client')
+@patch('src.aws_s3_mcp.server.session.create_client')
 async def test_list_s3_objects_no_credentials(mock_create_client):
     """Test error handling when AWS credentials are missing."""
     
@@ -137,7 +137,7 @@ async def test_list_s3_objects_no_credentials(mock_create_client):
     assert result[0].startswith("Error: AWS credentials not found")
 
 @pytest.mark.asyncio
-@patch('s3_mcp_server.session.create_client')
+@patch('src.aws_s3_mcp.server.session.create_client')
 async def test_list_s3_objects_client_error(mock_create_client):
     """Test error handling when the specified bucket does not exist."""
     
@@ -159,7 +159,7 @@ async def test_list_s3_objects_client_error(mock_create_client):
     mock_client.list_objects_v2.assert_called_once_with(Bucket='nonexistent-bucket', Prefix='', MaxKeys=50)
 
 @pytest.mark.asyncio
-@patch('s3_mcp_server.session.create_client')
+@patch('src.aws_s3_mcp.server.session.create_client')
 async def test_list_s3_objects_botocore_error(mock_create_client):
     """Test error handling for general network connectivity issues."""
     
@@ -174,7 +174,7 @@ async def test_list_s3_objects_botocore_error(mock_create_client):
     assert "AWS Connection Error:" in result[0]
 
 @pytest.mark.asyncio
-@patch('s3_mcp_server.session.create_client')
+@patch('src.aws_s3_mcp.server.session.create_client')
 async def test_read_s3_file_head_success(mock_create_client):
     """Test that a successful get_object response is correctly parsed."""
     
@@ -193,7 +193,7 @@ async def test_read_s3_file_head_success(mock_create_client):
     mock_client.get_object.assert_called_once_with(Bucket='test-bucket', Key='test-file.csv', Range='bytes=0-2000')
 
 @pytest.mark.asyncio
-@patch('s3_mcp_server.session.create_client')
+@patch('src.aws_s3_mcp.server.session.create_client')
 async def test_read_s3_file_head_no_credentials(mock_create_client):
     """Test error handling when AWS credentials are missing."""
     
@@ -206,7 +206,7 @@ async def test_read_s3_file_head_no_credentials(mock_create_client):
     assert result.startswith("Error: AWS credentials not found")
 
 @pytest.mark.asyncio
-@patch('s3_mcp_server.session.create_client')
+@patch('src.aws_s3_mcp.server.session.create_client')
 async def test_read_s3_file_head_client_error(mock_create_client):
     """Test error handling when the specified object does not exist."""
     
@@ -226,7 +226,7 @@ async def test_read_s3_file_head_client_error(mock_create_client):
     assert "The specified key does not exist" in result
 
 @pytest.mark.asyncio
-@patch('s3_mcp_server.session.create_client')
+@patch('src.aws_s3_mcp.server.session.create_client')
 async def test_read_s3_file_head_botocore_error(mock_create_client):
     """Test error handling for general network connectivity issues."""
     

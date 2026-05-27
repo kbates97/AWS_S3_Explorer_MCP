@@ -96,6 +96,9 @@ async def read_s3_file_head(bucket_name: str, object_key: str, byte_limit: int =
     except Exception as e:
         return f"Unexpected Error: {str(e)}"
 
-if __name__ == "__main__":
-    # Run the MCP server to listen for incoming requests
+def main():
+    """Entry point for the package."""
     mcp.run()
+
+if __name__ == "__main__":
+    main()
