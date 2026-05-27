@@ -26,9 +26,9 @@ This server exposes three specific primitives:
 * AWS credentials configured locally (e.g., `aws configure` or `~/.aws/credentials`)
 
 ### Option 1: User Setup
-Install the package with pip directly from GitHub:
+Install the package from PyPI:
 ```bash
-pip install git+https://github.com/kbates97/AWS_S3_Explorer_MCP.git
+pip install aws-s3-explorer-mcp
 ```
 You can start the MCP server by running:
 ```bash
