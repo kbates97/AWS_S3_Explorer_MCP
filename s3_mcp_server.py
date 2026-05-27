@@ -1,5 +1,5 @@
 import aiobotocore.session
-from botocore.exceptions import ClientError
+from botocore.exceptions import ClientError, NoCredentialsError, BotoCoreError
 from mcp.server.fastmcp import FastMCP
 
 # Initialize the MCP Server
@@ -18,8 +18,14 @@ async def list_s3_buckets() -> list[str]:
         async with session.create_client('s3') as client:
             response = await client.list_buckets()
             return [bucket['Name'] for bucket in response['Buckets']]
+    except NoCredentialsError:
+        return ["Error: AWS credentials not found. Please run `aws configure` or set your environment variables."]
     except ClientError as e:
-        return [f"Error accessing S3: {str(e)}"]
+        return [f"AWS API Error: {e.response['Error']['Message']}"]
+    except BotoCoreError as e:
+        return [f"AWS Connection Error: {str(e)}"]
+    except Exception as e:
+        return [f"Unexpected Error: {str(e)}"]
 
 @mcp.tool()
 async def list_s3_objects(bucket_name: str, prefix: str = "", max_keys: int = 50) -> list[dict]:
@@ -51,7 +57,13 @@ async def list_s3_objects(bucket_name: str, prefix: str = "", max_keys: int = 50
             for obj in response['Contents']
         ]
     except ClientError as e:
-        return [{"error": f"Error accessing bucket {bucket_name}: {str(e)}"}]
+        return [f"AWS API Error: {e.response['Error']['Message']}"]
+    except NoCredentialsError:
+        return ["Error: AWS credentials not found. Please run `aws configure` or set your environment variables."]
+    except BotoCoreError as e:
+        return [f"AWS Connection Error: {str(e)}"]
+    except Exception as e:
+        return [f"Unexpected Error: {str(e)}"]
 
 @mcp.tool()
 async def read_s3_file_head(bucket_name: str, object_key: str, byte_limit: int = 2000) -> str:
@@ -76,7 +88,13 @@ async def read_s3_file_head(bucket_name: str, object_key: str, byte_limit: int =
             body = await response['Body'].read()
             return body.decode('utf-8', errors='replace')
     except ClientError as e:
-        return f"Error reading file {object_key}: {str(e)}"
+        return f"AWS API Error: {e.response['Error']['Message']}"
+    except NoCredentialsError:
+        return "Error: AWS credentials not found. Please run `aws configure` or set your environment variables."
+    except BotoCoreError as e:
+        return f"AWS Connection Error: {str(e)}"
+    except Exception as e:
+        return f"Unexpected Error: {str(e)}"
 
 if __name__ == "__main__":
     # Run the MCP server to listen for incoming requests
