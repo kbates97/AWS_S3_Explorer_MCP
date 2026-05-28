@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "aws-s3-explorer-mcp"
-version = "0.1.3"
+version = "0.1.4"
 description = "An open-source Model Context Protocol (MCP) server for Amazon S3."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -12,13 +12,15 @@ license = {text = "MIT"}
 authors = [
   {name = "Kyle Bates", email = "kylembates97@gmail.com"}
 ]
-# These are the actual packages pip will install alongside your code
 dependencies = [
     "mcp",
     "aiobotocore"
 ]
 
-# This is the magic part: it creates a command-line tool automatically
+[project.urls]
+Homepage = "https://github.com/kbates97/AWS_S3_Explorer_MCP.git"
+Repository = "https://github.com/kbates97/AWS_S3_Explorer_MCP.git"
+
 [project.scripts]
 aws-s3-explorer-mcp = "aws_s3_mcp.server:main"
 
