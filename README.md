@@ -25,17 +25,23 @@ This server exposes three specific primitives:
 * Python 3.11+
 * AWS credentials configured locally (e.g., `aws configure` or `~/.aws/credentials`)
 
-### Option 1: User Setup
+### Option 1: Quick Setup
+If you have `uv` installed, you can quickly run the server without manual installation:
+```bash
+uvx aws-s3-explorer-mcp
+```
+
+### Option 2: User Setup
 Install the package from PyPI:
 ```bash
 pip install aws-s3-explorer-mcp
 ```
 You can start the MCP server by running:
 ```bash
-aws-s3-mcp
+aws-s3-explorer-mcp
 ```
 
-### Option 2: Developer Setup
+### Option 3: Developer Setup
 Clone the repository and install the required dependencies:
 
 ```bash
@@ -47,4 +53,8 @@ python -m venv venv
 # Mac/Linux: source venv/bin/activate
 
 pip install -r requirements.txt
+```
+You can run the server locally with:
+```bash
+python ./src/aws_s3_mcp/server.py
 ```
