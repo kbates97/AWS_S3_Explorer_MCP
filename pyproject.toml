@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "aws-s3-explorer-mcp"
-version = "0.1.1"
+version = "0.1.2"
 description = "An open-source Model Context Protocol (MCP) server for Amazon S3."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -20,7 +20,7 @@ dependencies = [
 
 # This is the magic part: it creates a command-line tool automatically
 [project.scripts]
-aws-s3-mcp = "aws_s3_mcp.server:main"
+aws-s3-explorer-mcp = "aws_s3_mcp.server:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
